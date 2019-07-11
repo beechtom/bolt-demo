@@ -52,7 +52,7 @@ class BoltDemo
     Try it out: bolt command run 'systemctl status httpd' -n target0
     WELCOME
 
-    run_command(/bolt command run .* -n .*/)
+    run_command(/bolt command run 'systemctl status httpd' -n target0/)
 
     bolt_say(<<~INST)
     Woops - looks like Apache has stopped on those nodes
@@ -60,7 +60,7 @@ class BoltDemo
     INST
 
     # TODO: Single quotes in regex
-    run_command(/bolt command run .* -n .*/)
+    run_command(/bolt command run 'systemctl start httpd' -n target0/)
 
     bolt_say("And make sure it's still working")
     check = "bolt command run 'systemctl status httpd' -n target0"
@@ -83,7 +83,7 @@ class BoltDemo
     # Extra newline after `cat`
     bolt_say("\nRun the plan: bolt plan run demo::update_timeout timeout=200 -n target0")
     # TODO: Colons in regex
-    run_command(/bolt plan .* timeout=\d+ -n.*/) 
+    run_command(/bolt plan run demo::update_timeout timeout=200 -n target0/) 
 
     bolt_say("Awesome! Remote apache configuration made easy")
     @prompt.keypress("Press enter to continue", keys: [:return])
@@ -101,7 +101,7 @@ class BoltDemo
     @quiet_cmd.run!(cat)
 
     bolt_say("Try it out: bolt plan run demo::deploy_apache -n target0")
-    run_command(/bolt plan run .* -n .*/)
+    run_command(/bolt plan run demo::deploy_apache -n target0/)
     @prompt.keypress("Check it out at 10.0.0.100\nPress 'enter' to continue")
   end
 end
